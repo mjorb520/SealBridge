@@ -26,6 +26,8 @@
 		9CC286A1B1 /* RawPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA69329F1 /* RawPacket.swift */; };
 		9C3269CAB1 /* PhonePairingHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C83D375F1 /* PhonePairingHost.swift */; };
 		9D000002 /* RustBridge.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D000001 /* RustBridge.xcframework */; };
+		9C0BF6AFB2 /* MinimuxerBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2CCD57F2 /* MinimuxerBridge.swift */; };
+		9C5B1B04B2 /* MinimuxerBridgeIdevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5E5099F2 /* MinimuxerBridgeIdevice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		9CA69329F1 /* RawPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawPacket.swift; sourceTree = "<group>"; };
 		9C83D375F1 /* PhonePairingHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePairingHost.swift; sourceTree = "<group>"; };
 		9D000001 /* RustBridge.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = RustBridge.xcframework; sourceTree = "<group>"; };
+		9C2CCD57F2 /* MinimuxerBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimuxerBridge.swift; sourceTree = "<group>"; };
+		9C5E5099F2 /* MinimuxerBridgeIdevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimuxerBridgeIdevice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 				9C66B2A9F1 /* Provision.swift */,
 				9CA69329F1 /* RawPacket.swift */,
 			);
+				9C2CCD57F2 /* MinimuxerBridge.swift */,
+				9C5E5099F2 /* MinimuxerBridgeIdevice.swift */,
 			path = Minimuxer;
 			sourceTree = "<group>";
 		};
@@ -206,6 +212,8 @@
 				9CA31873B1 /* Provision.swift in Sources */,
 				9CC286A1B1 /* RawPacket.swift in Sources */,
 				9C3269CAB1 /* PhonePairingHost.swift in Sources */,
+				9C4ADF2EB2 /* MinimuxerBridge.swift in Sources */,
+				9C11754EB2 /* MinimuxerBridgeIdevice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
