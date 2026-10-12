@@ -56,17 +56,59 @@ final class BridgeServer: NSObject {
     }
 
     private nonisolated func receiveRequest(on conn: NWConnection) {
-        conn.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] data, _, _, _ in
-            guard let data = data, !data.isEmpty else {
-                conn.cancel()
-                return
-            }
-            // 尝试读取完整 body（Content-Length）
-            let request = String(data: data, encoding: .utf8) ?? ""
-            Task { @MainActor [weak self] in
-                self?.route(request: request, rawData: data, conn: conn)
+        // 先读 header，解析 Content-Length，再循环读完整个 body（支持大 IPA 分块上传）
+        var buffer = Data()
+        func readMore() {
+            conn.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] data, _, isComplete, _ in
+                guard let self = self else { conn.cancel(); return }
+                if let data = data, !data.isEmpty {
+                    buffer.append(data)
+                }
+                // 检查是否已读完 header + body
+                if let (headerLen, contentLen) = Self.parseHeader(in: buffer) {
+                    let totalNeeded = headerLen + contentLen
+                    if buffer.count >= totalNeeded {
+                        let requestData = buffer
+                        let request = String(data: requestData.prefix(headerLen), encoding: .utf8) ?? ""
+                        Task { @MainActor [weak self] in
+                            self?.route(request: request, rawData: requestData, conn: conn)
+                        }
+                        return
+                    }
+                } else if isComplete {
+                    // 没有 Content-Length，按已有数据处理
+                    let requestData = buffer
+                    let request = String(data: requestData, encoding: .utf8) ?? ""
+                    Task { @MainActor [weak self] in
+                        self?.route(request: request, rawData: requestData, conn: conn)
+                    }
+                    return
+                }
+                if isComplete && buffer.isEmpty {
+                    conn.cancel()
+                    return
+                }
+                readMore()
             }
         }
+        readMore()
+    }
+
+    /// 从 buffer 解析 header 长度和 Content-Length。返回 nil 表示 header 还没收全。
+    private nonisolated static func parseHeader(in buffer: Data) -> (headerLen: Int, contentLen: Int)? {
+        let sep = Data("\r\n\r\n".utf8)
+        guard let range = buffer.range(of: sep) else { return nil }
+        let headerLen = range.upperBound
+        let headerStr = String(data: buffer.prefix(headerLen), encoding: .utf8) ?? ""
+        var contentLen = 0
+        for line in headerStr.components(separatedBy: "\r\n") {
+            let lower = line.lowercased()
+            if lower.hasPrefix("content-length:") {
+                let val = line.dropFirst("content-length:".count).trimmingCharacters(in: .whitespaces)
+                contentLen = Int(val) ?? 0
+            }
+        }
+        return (headerLen, contentLen)
     }
 
     private func route(request: String, rawData: Data, conn: NWConnection) {
@@ -82,13 +124,19 @@ final class BridgeServer: NSObject {
         let method = parts[0]
         let path = parts[1].components(separatedBy: "?").first ?? "/"
 
+        // CORS 预检
+        if method == "OPTIONS" {
+            sendPreflight(conn: conn)
+            return
+        }
+
         switch (method, path) {
         case ("GET", "/status"):
             let paired = pairingDone
             let tunnel = checkTunnel()
-            let body = """
-            {"paired": \(paired), "tunnel": \(tunnel), "version": "1.0"}
-            """
+            let udid = Minimuxer.fetchUDID() ?? ""
+            let pairCode = currentPairCode ?? ""
+            let body = "{\"paired\": \(paired), \"tunnel\": \(tunnel), \"version\": \"1.0\", \"udid\": \"\(udid)\", \"pairCode\": \"\(pairCode)\"}"
             sendResponse(conn: conn, status: 200, body: body, contentType: "application/json")
 
         case ("POST", "/pair"):
@@ -295,6 +343,19 @@ final class BridgeServer: NSObject {
     }
 
     // MARK: - HTTP 响应
+
+    private func sendPreflight(conn: NWConnection) {
+        let header = "HTTP/1.1 204 No Content\r\n" +
+                     "Access-Control-Allow-Origin: *\r\n" +
+                     "Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n" +
+                     "Access-Control-Allow-Headers: Content-Type\r\n" +
+                     "Content-Length: 0\r\n" +
+                     "Connection: close\r\n\r\n"
+        let data = header.data(using: .utf8) ?? Data()
+        conn.send(content: data, completion: .contentProcessed { _ in
+            conn.cancel()
+        })
+    }
 
     private func sendResponse(conn: NWConnection, status: Int, body: String, contentType: String = "text/plain") {
         let statusText: String
