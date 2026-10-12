@@ -22,7 +22,7 @@ jobs:
       - name: Build RustBridge
         run: |
           cd Vendor/Minimuxer/RustBridge
-          make build
+          make xcframework
           ls -lh lib/RustBridge.xcframework/
 
       - name: Build
