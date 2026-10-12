@@ -14,11 +14,16 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
 
-      - name: Extract RustBridge
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios,aarch64-apple-ios-sim
+
+      - name: Build RustBridge
         run: |
-          cd Vendor/Minimuxer/RustBridge/lib
-          tar xzf rustbridge.tar.gz
-          ls -lh RustBridge.xcframework/
+          cd Vendor/Minimuxer/RustBridge
+          make build
+          ls -lh lib/RustBridge.xcframework/
 
       - name: Build
         run: |
