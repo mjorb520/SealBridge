@@ -212,6 +212,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/Vendor/Minimuxer/RustBridge/lib";
+				OTHER_LDFLAGS = "$(inherited) -undefined dynamic_lookup";
 				INFOPLIST_FILE = SealBridge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.0.1;
@@ -225,6 +226,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/Vendor/Minimuxer/RustBridge/lib";
+				OTHER_LDFLAGS = "$(inherited) -undefined dynamic_lookup";
 				INFOPLIST_FILE = SealBridge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.0.1;
