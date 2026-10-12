@@ -48,6 +48,47 @@ final class BridgeServer: NSObject {
         isRunning = false
     }
 
+    // MARK: - App UI 调用
+
+    struct BridgeStatus {
+        let paired: Bool
+        let tunnel: Bool
+        let pairCode: String?
+    }
+
+    func getStatus() -> BridgeStatus {
+        return BridgeStatus(paired: pairingDone, tunnel: checkTunnel(), pairCode: currentPairCode)
+    }
+
+    /// App 内触发配对，配对码通过回调返回
+    func triggerPairing(onCode: @escaping (String?) -> Void) {
+        if let code = currentPairCode {
+            onCode(code)
+            return
+        }
+        let host = PhonePairingHost()
+        self.pairingHost = host
+        // 轮询配对码
+        host.start { [weak self] event in
+            Task { @MainActor [weak self] in
+                self?.handlePairEvent(event)
+                if case .showingCode(let code) = event {
+                    onCode(code)
+                } else if case .completed = event {
+                    onCode(nil)
+                } else if case .failed = event {
+                    onCode(nil)
+                }
+            }
+        }
+        // 5 秒后如果还没码，返回 nil 让 UI 继续轮询
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            if self?.currentPairCode == nil && !(self?.pairingDone ?? false) {
+                onCode(nil)
+            }
+        }
+    }
+
     // MARK: - HTTP 处理
 
     private func handle(_ conn: NWConnection) {
