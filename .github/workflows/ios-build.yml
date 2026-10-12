@@ -1,4 +1,4 @@
-name: Build IPA
+      name: Build IPA
 
 on:
   push:
@@ -28,7 +28,14 @@ jobs:
             -destination 'generic/platform=iOS' \
             -archivePath build/SealBridge.xcarchive \
             archive \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build.log; test ${PIPESTATUS[0]} -eq 0
+
+      - name: Upload build log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
 
       - name: Export IPA
         run: |
