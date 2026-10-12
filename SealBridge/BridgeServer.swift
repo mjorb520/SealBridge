@@ -22,6 +22,11 @@ final class BridgeServer: NSObject {
     // 上传的 IPA 暂存路径
     private var uploadedIpaURL: URL?
 
+    // 安装进度（网页轮询用）
+    private var installProgress: Double = 0
+    private var installStatus: String = "idle"  // idle / installing / done / error
+    private var installError: String?
+
     func start() {
         guard !isRunning else { return }
         let params = NWParameters.tcp
@@ -191,6 +196,11 @@ final class BridgeServer: NSObject {
             let bundleId = extractBundleId(from: request) ?? "com.example.app"
             Task { await handleInstall(bundleId: bundleId, conn: conn) }
 
+        case ("GET", "/progress"):
+            let errStr = installError ?? ""
+            let body = "{\"status\": \"\(installStatus)\", \"progress\": \(installProgress), \"error\": \"\(errStr)\"}"
+            sendResponse(conn: conn, status: 200, body: body, contentType: "application/json")
+
         default:
             sendResponse(conn: conn, status: 404, body: "Not Found")
         }
@@ -216,9 +226,25 @@ final class BridgeServer: NSObject {
 
     // MARK: - 业务逻辑
 
-    /// 检查隧道是否通：走 Minimuxer 的就绪判据
+    /// 检查隧道是否通：直连 10.7.0.1:62078（lockdown），通了就是隧道在了
     private func checkTunnel() -> Bool {
-        return Minimuxer.ready()
+        let sock = socket(AF_INET, SOCK_STREAM, 0)
+        guard sock >= 0 else { return false }
+        defer { close(sock) }
+        var addr = sockaddr_in()
+        addr.sin_family = sa_family_t(AF_INET)
+        addr.sin_port = UInt16(62078).bigEndian
+        addr.sin_addr.s_addr = inet_addr("10.7.0.1")
+        // 2 秒超时
+        var tv = timeval(tv_sec: 2, tv_usec: 0)
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, socklen_t(MemoryLayout<timeval>.size))
+        setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &tv, socklen_t(MemoryLayout<timeval>.size))
+        let result = withUnsafePointer(to: &addr) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                connect(sock, $0, socklen_t(MemoryLayout<sockaddr_in>.size))
+            }
+        }
+        return result == 0
     }
 
     /// 配对：iOS 27 走 Bonjour Remote Pairing
@@ -350,7 +376,7 @@ final class BridgeServer: NSObject {
         return data.subdata(in: fileStart..<end)
     }
 
-    /// 安装：调 Minimuxer 走隧道装包
+    /// 安装：调 Minimuxer 走隧道装包（进度可通过 /progress 轮询）
     private func handleInstall(bundleId: String, conn: NWConnection) async {
         guard let ipaURL = uploadedIpaURL else {
             sendResponse(conn: conn, status: 400,
@@ -359,24 +385,34 @@ final class BridgeServer: NSObject {
             return
         }
 
+        installStatus = "installing"
+        installProgress = 0
+        installError = nil
+
         do {
             let ipaBytes = try Data(contentsOf: ipaURL)
             print("[Bridge] 开始安装 \(bundleId) (\(ipaBytes.count) bytes)")
+            installProgress = 0.1
 
             // 先 AFC 传包，再调 installation_proxy 安装
             try Install.yeetAppAfc(bundleId: bundleId, ipaBytes: ipaBytes)
+            installProgress = 0.6
             try Install.installIpa(bundleId: bundleId)
+            installProgress = 1.0
 
             print("[Bridge] 安装完成: \(bundleId)")
             // 清理临时文件
             try? FileManager.default.removeItem(at: ipaURL)
             uploadedIpaURL = nil
 
+            installStatus = "done"
             sendResponse(conn: conn, status: 200,
                          body: "{\"installed\": true, \"bundleId\": \"\(bundleId)\"}",
                          contentType: "application/json")
         } catch {
             print("[Bridge] 安装失败: \(error)")
+            installStatus = "error"
+            installError = error.localizedDescription
             sendResponse(conn: conn, status: 500,
                          body: "{\"installed\": false, \"error\": \"\(error.localizedDescription)\"}",
                          contentType: "application/json")
