@@ -12,6 +12,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
+      - name: Install Rust
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - name: Build RustBridge
+        run: |
+          cd Vendor/Minimuxer/RustBridge
+          rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+          make xcframework
       - name: Build
         run: |
           xcodebuild -project SealBridge.xcodeproj \
