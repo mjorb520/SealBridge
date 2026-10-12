@@ -22,6 +22,9 @@ final class BridgeServer: NSObject {
     // 上传的 IPA 暂存路径
     private var uploadedIpaURL: URL?
 
+    // 配对文件路径（手动导入）
+    private var pairingFileURL: URL?
+
     // 安装进度（网页轮询用）
     private var installProgress: Double = 0
     private var installStatus: String = "idle"  // idle / installing / done / error
@@ -198,6 +201,9 @@ final class BridgeServer: NSObject {
         case ("POST", "/upload"):
             handleUpload(request: request, rawData: rawData, conn: conn)
 
+        case ("POST", "/pairing"):
+            handlePairingUpload(request: request, rawData: rawData, conn: conn)
+
         case ("POST", "/install"):
             // 从 query 或 body 取 bundleId
             let bundleId = extractBundleId(from: request) ?? "com.example.app"
@@ -341,6 +347,60 @@ final class BridgeServer: NSObject {
                          body: "{\"saved\": true, \"size\": \(ipaData.count)}",
                          contentType: "application/json")
         } catch {
+            sendResponse(conn: conn, status: 500,
+                         body: "{\"saved\": false, \"error\": \"\(error.localizedDescription)\"}",
+                         contentType: "application/json")
+        }
+    }
+
+    /// 配对文件上传：保存后启动 Minimuxer
+    private func handlePairingUpload(request: String, rawData: Data, conn: NWConnection) {
+        let lines = request.components(separatedBy: "\r\n")
+        var boundary: String?
+        for line in lines {
+            let lower = line.lowercased()
+            if lower.hasPrefix("content-type:") && lower.contains("multipart/form-data") {
+                if let bRange = line.range(of: "boundary=") {
+                    boundary = String(line[bRange.upperBound...]).trimmingCharacters(in: .whitespaces)
+                }
+            }
+        }
+
+        let fileData: Data?
+        if let boundary = boundary {
+            fileData = extractMultipartFile(data: rawData, boundary: boundary)
+        } else {
+            if let headerEnd = rawData.firstRange(of: Data("\r\n\r\n".utf8)) {
+                fileData = rawData.subdata(in: headerEnd.upperBound..<rawData.count)
+            } else {
+                fileData = nil
+            }
+        }
+
+        guard let fileData = fileData, !fileData.isEmpty else {
+            sendResponse(conn: conn, status: 400,
+                         body: "{\"saved\": false, \"error\": \"未收到配对文件\"}",
+                         contentType: "application/json")
+            return
+        }
+
+        let docDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let pairURL = docDir.appendingPathComponent("SealBridgePairing.mobiledevicepairing")
+        do {
+            try fileData.write(to: pairURL)
+            pairingFileURL = pairURL
+            print("[Bridge] 配对文件已保存: \(pairURL.path)")
+
+            // 启动 Minimuxer
+            let logPath = docDir.appendingPathComponent("minimuxer.log").path
+            try Minimuxer.start(pairingFile: pairURL.path, logPath: logPath)
+            print("[Bridge] Minimuxer 已启动")
+
+            sendResponse(conn: conn, status: 200,
+                         body: "{\"saved\": true, \"minimuxer\": true}",
+                         contentType: "application/json")
+        } catch {
+            print("[Bridge] 配对文件处理失败: \(error)")
             sendResponse(conn: conn, status: 500,
                          body: "{\"saved\": false, \"error\": \"\(error.localizedDescription)\"}",
                          contentType: "application/json")
