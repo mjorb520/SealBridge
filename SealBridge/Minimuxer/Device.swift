@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RustBridge
 
 public final class Device {
     private let rustDevice: RustDevice

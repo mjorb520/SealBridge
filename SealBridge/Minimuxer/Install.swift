@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RustBridge
 
 public protocol InstallProvider {
     func yeetAppAfc(bundleId: String, ipaBytes: Data) throws

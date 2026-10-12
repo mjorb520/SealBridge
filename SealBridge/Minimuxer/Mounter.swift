@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RustBridge
 import ZIPFoundation
 
 public protocol MounterProvider: AnyObject {

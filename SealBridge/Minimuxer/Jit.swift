@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RustBridge
 
 public protocol JITProvider {
     func debugApp(appId: String) throws;

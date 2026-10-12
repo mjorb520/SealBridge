@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RustBridge
 
 public protocol ProvisionProvider {
     func installProvisioningProfile(profile: Data) throws;

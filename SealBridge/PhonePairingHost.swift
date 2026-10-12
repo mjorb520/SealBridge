@@ -1,5 +1,4 @@
 import Foundation
-@preconcurrency import Minimuxer
 
 /// The device-side Remote Pairing host used by iOS 27. It only owns the
 /// ephemeral Bonjour advertisement and the host identity file; `PairingStore`

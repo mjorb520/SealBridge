@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RustBridge
 
 public struct RustDirectoryEntry {
     public let path: String

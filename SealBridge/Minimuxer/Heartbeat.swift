@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RustBridge
 
 public class Heartbeat {
     private static let stateLock = NSLock()
