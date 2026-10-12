@@ -9,6 +9,22 @@
 /* Begin PBXBuildFile section */
 		8B1A2B3C4D5E6F70 /* BridgeServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A2B3C4D5E6F71 /* BridgeServer.swift */; };
 		8B1A2B3C4D5E6F72 /* SealBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A2B3C4D5E6F73 /* SealBridgeApp.swift */; };
+		9CACA303B1 /* AfcFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6E99B2F1 /* AfcFileManager.swift */; };
+		9C71C22FB1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFC4238F1 /* Constants.swift */; };
+		9C85EC47B1 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C396B24F1 /* Device.swift */; };
+		9C8D73F8B1 /* DeviceEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C479FDDF1 /* DeviceEndpoint.swift */; };
+		9C870697B1 /* Heartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C45C5DBF1 /* Heartbeat.swift */; };
+		9CC18A98B1 /* IfaceScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CF49C81F1 /* IfaceScanner.swift */; };
+		9C828F9FB1 /* Install.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C79646FF1 /* Install.swift */; };
+		9C7F0348B1 /* Jit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C46BF8AF1 /* Jit.swift */; };
+		9C579ECDB1 /* Minimuxer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7B30A0F1 /* Minimuxer.swift */; };
+		9C864A20B1 /* MinimuxerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C379263F1 /* MinimuxerError.swift */; };
+		9CB7D3AEB1 /* Mounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8231BF1 /* Mounter.swift */; };
+		9CABA997B1 /* Muxer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6B39FFF1 /* Muxer.swift */; };
+		9CA9D844B1 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA28D3F1 /* NetworkObserver.swift */; };
+		9CA31873B1 /* Provision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C66B2A9F1 /* Provision.swift */; };
+		9CC286A1B1 /* RawPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA69329F1 /* RawPacket.swift */; };
+		9C3269CAB1 /* PhonePairingHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C83D375F1 /* PhonePairingHost.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -16,6 +32,22 @@
 		8B1A2B3C4D5E6F71 /* BridgeServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeServer.swift; sourceTree = "<group>"; };
 		8B1A2B3C4D5E6F73 /* SealBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SealBridgeApp.swift; sourceTree = "<group>"; };
 		8B1A2B3C4D5E6F74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C6E99B2F1 /* AfcFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfcFileManager.swift; sourceTree = "<group>"; };
+		9CFC4238F1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9C396B24F1 /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		9C479FDDF1 /* DeviceEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEndpoint.swift; sourceTree = "<group>"; };
+		9C45C5DBF1 /* Heartbeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Heartbeat.swift; sourceTree = "<group>"; };
+		9CF49C81F1 /* IfaceScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IfaceScanner.swift; sourceTree = "<group>"; };
+		9C79646FF1 /* Install.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Install.swift; sourceTree = "<group>"; };
+		9C46BF8AF1 /* Jit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jit.swift; sourceTree = "<group>"; };
+		9C7B30A0F1 /* Minimuxer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minimuxer.swift; sourceTree = "<group>"; };
+		9C379263F1 /* MinimuxerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimuxerError.swift; sourceTree = "<group>"; };
+		9CB8231BF1 /* Mounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mounter.swift; sourceTree = "<group>"; };
+		9C6B39FFF1 /* Muxer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Muxer.swift; sourceTree = "<group>"; };
+		9CEA28D3F1 /* NetworkObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
+		9C66B2A9F1 /* Provision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provision.swift; sourceTree = "<group>"; };
+		9CA69329F1 /* RawPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawPacket.swift; sourceTree = "<group>"; };
+		9C83D375F1 /* PhonePairingHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePairingHost.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +75,8 @@
 				8B1A2B3C4D5E6F71 /* BridgeServer.swift */,
 				8B1A2B3C4D5E6F73 /* SealBridgeApp.swift */,
 				8B1A2B3C4D5E6F74 /* Info.plist */,
+				9C000001 /* Minimuxer */,
+				9C83D375F1 /* PhonePairingHost.swift */,
 			);
 			path = SealBridge;
 			sourceTree = "<group>";
@@ -53,6 +87,28 @@
 				8B1A2B3C4D5E6F70 /* SealBridge.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9C000001 /* Minimuxer */ = {
+			isa = PBXGroup;
+			children = (
+				9C6E99B2F1 /* AfcFileManager.swift */,
+				9CFC4238F1 /* Constants.swift */,
+				9C396B24F1 /* Device.swift */,
+				9C479FDDF1 /* DeviceEndpoint.swift */,
+				9C45C5DBF1 /* Heartbeat.swift */,
+				9CF49C81F1 /* IfaceScanner.swift */,
+				9C79646FF1 /* Install.swift */,
+				9C46BF8AF1 /* Jit.swift */,
+				9C7B30A0F1 /* Minimuxer.swift */,
+				9C379263F1 /* MinimuxerError.swift */,
+				9CB8231BF1 /* Mounter.swift */,
+				9C6B39FFF1 /* Muxer.swift */,
+				9CEA28D3F1 /* NetworkObserver.swift */,
+				9C66B2A9F1 /* Provision.swift */,
+				9CA69329F1 /* RawPacket.swift */,
+			);
+			path = Minimuxer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,6 +179,22 @@
 			files = (
 				8B1A2B3C4D5E6F70 /* BridgeServer.swift in Sources */,
 				8B1A2B3C4D5E6F72 /* SealBridgeApp.swift in Sources */,
+				9CACA303B1 /* AfcFileManager.swift in Sources */,
+				9C71C22FB1 /* Constants.swift in Sources */,
+				9C85EC47B1 /* Device.swift in Sources */,
+				9C8D73F8B1 /* DeviceEndpoint.swift in Sources */,
+				9C870697B1 /* Heartbeat.swift in Sources */,
+				9CC18A98B1 /* IfaceScanner.swift in Sources */,
+				9C828F9FB1 /* Install.swift in Sources */,
+				9C7F0348B1 /* Jit.swift in Sources */,
+				9C579ECDB1 /* Minimuxer.swift in Sources */,
+				9C864A20B1 /* MinimuxerError.swift in Sources */,
+				9CB7D3AEB1 /* Mounter.swift in Sources */,
+				9CABA997B1 /* Muxer.swift in Sources */,
+				9CA9D844B1 /* NetworkObserver.swift in Sources */,
+				9CA31873B1 /* Provision.swift in Sources */,
+				9CC286A1B1 /* RawPacket.swift in Sources */,
+				9C3269CAB1 /* PhonePairingHost.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
