@@ -10,17 +10,20 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
+
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
+
       - name: Install Rust
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios,aarch64-apple-ios-sim
+
       - name: Build RustBridge
         run: |
           cd Vendor/Minimuxer/RustBridge
-          rustup target add aarch64-apple-ios aarch64-apple-ios-sim
           make xcframework
+
       - name: Build
         run: |
           xcodebuild -project SealBridge.xcodeproj \
@@ -30,11 +33,13 @@ jobs:
             -archivePath build/SealBridge.xcarchive \
             archive \
             CODE_SIGNING_ALLOWED=NO
+
       - name: Export IPA
         run: |
           mkdir -p build/ipa/Payload
           cp -r build/SealBridge.xcarchive/Products/Applications/SealBridge.app build/ipa/Payload/
           cd build/ipa && zip -r ../SealBridge.ipa Payload/
+
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
