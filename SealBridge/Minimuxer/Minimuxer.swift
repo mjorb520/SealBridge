@@ -214,7 +214,7 @@ public struct Minimuxer {
                 "conn=\(deviceConnection) " +
                 "dev=\(deviceExists) " +
                 "hb=\(Heartbeat.lastBeatSuccessful) " +
-                "dmg=\(Mounter.dmgMounted) " +
+                "dmg=false " +
                 "started=\(Muxer.started) " +
                 "ready=\(Muxer.usbmuxdReady)"
             )
@@ -287,7 +287,7 @@ public struct Minimuxer {
         Install.resetProvider()
         Provision.resetProvider()
         JIT.resetProvider()
-        Mounter.resetProvider()
+        // Mounter.resetProvider() // stubbed
         // RSD 缓存连接可能已随隧道断开；不复位会让重试一直复用死连接
         if wasRemotePairing {
             RustIdevice.invalidateConnection()
@@ -504,7 +504,7 @@ public struct Minimuxer {
     }
 
     public static func startAutoMounter(docsPath: String) {
-        Mounter.startAutoMounter(docsPath: docsPath)
+        // Mounter.startAutoMounter(docsPath: docsPath) // stubbed
     }
 
     public static func installProvisioningProfile(profile: Data) throws {

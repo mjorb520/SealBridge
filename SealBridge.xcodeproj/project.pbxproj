@@ -22,11 +22,10 @@
 		AB000019CD /* MinimuxerBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00001ACD /* MinimuxerBridge.swift */; };
 		AB00001BCD /* MinimuxerBridgeIdevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00001CCD /* MinimuxerBridgeIdevice.swift */; };
 		AB00001DCD /* MinimuxerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB00001ECD /* MinimuxerError.swift */; };
-		AB00001FCD /* Mounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000020CD /* Mounter.swift */; };
-		AB000021CD /* Muxer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000022CD /* Muxer.swift */; };
-		AB000023CD /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000024CD /* NetworkObserver.swift */; };
-		AB000025CD /* Provision.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000026CD /* Provision.swift */; };
-		AB000027CD /* RawPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000028CD /* RawPacket.swift */; };
+		AB00001FCD /* Muxer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000020CD /* Muxer.swift */; };
+		AB000021CD /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000022CD /* NetworkObserver.swift */; };
+		AB000023CD /* Provision.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000024CD /* Provision.swift */; };
+		AB000025CD /* RawPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB000026CD /* RawPacket.swift */; };
 		AB000001 /* RustBridge.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB000002 /* RustBridge.xcframework */; };
 /* End PBXBuildFile section */
 
@@ -46,12 +45,11 @@
 		AB00001ACD /* MinimuxerBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimuxerBridge.swift; sourceTree = "<group>"; };
 		AB00001CCD /* MinimuxerBridgeIdevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimuxerBridgeIdevice.swift; sourceTree = "<group>"; };
 		AB00001ECD /* MinimuxerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimuxerError.swift; sourceTree = "<group>"; };
-		AB000020CD /* Mounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mounter.swift; sourceTree = "<group>"; };
-		AB000022CD /* Muxer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Muxer.swift; sourceTree = "<group>"; };
-		AB000024CD /* NetworkObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
-		AB000026CD /* Provision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provision.swift; sourceTree = "<group>"; };
-		AB000028CD /* RawPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawPacket.swift; sourceTree = "<group>"; };
-		AB000002 /* RustBridge.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "Vendor/Minimuxer/RustBridge/lib/RustBridge.xcframework"; sourceTree = "<group>"; };
+		AB000020CD /* Muxer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Muxer.swift; sourceTree = "<group>"; };
+		AB000022CD /* NetworkObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
+		AB000024CD /* Provision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provision.swift; sourceTree = "<group>"; };
+		AB000026CD /* RawPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawPacket.swift; sourceTree = "<group>"; };
+		AB000002 /* RustBridge.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = RustBridge.xcframework; sourceTree = "<group>"; };
 		AB000003 /* SealBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SealBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,11 +101,10 @@
 				AB00001ACD /* MinimuxerBridge.swift */,
 				AB00001CCD /* MinimuxerBridgeIdevice.swift */,
 				AB00001ECD /* MinimuxerError.swift */,
-				AB000020CD /* Mounter.swift */,
-				AB000022CD /* Muxer.swift */,
-				AB000024CD /* NetworkObserver.swift */,
-				AB000026CD /* Provision.swift */,
-				AB000028CD /* RawPacket.swift */,
+				AB000020CD /* Muxer.swift */,
+				AB000022CD /* NetworkObserver.swift */,
+				AB000024CD /* Provision.swift */,
+				AB000026CD /* RawPacket.swift */,
 			);
 			path = Minimuxer;
 			sourceTree = "<group>";
@@ -201,11 +198,10 @@
 				AB000019CD /* MinimuxerBridge.swift in Sources */,
 				AB00001BCD /* MinimuxerBridgeIdevice.swift in Sources */,
 				AB00001DCD /* MinimuxerError.swift in Sources */,
-				AB00001FCD /* Mounter.swift in Sources */,
-				AB000021CD /* Muxer.swift in Sources */,
-				AB000023CD /* NetworkObserver.swift in Sources */,
-				AB000025CD /* Provision.swift in Sources */,
-				AB000027CD /* RawPacket.swift in Sources */,
+				AB00001FCD /* Muxer.swift in Sources */,
+				AB000021CD /* NetworkObserver.swift in Sources */,
+				AB000023CD /* Provision.swift in Sources */,
+				AB000025CD /* RawPacket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +217,7 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sealbridge.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -234,7 +230,7 @@
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sealbridge.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

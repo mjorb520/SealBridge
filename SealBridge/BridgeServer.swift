@@ -137,7 +137,7 @@ final class BridgeServer: NSObject {
         // 如果已在配对，返回当前码
         if let code = currentPairCode {
             sendResponse(conn: conn, status: 200,
-                         body: """{"code": "\(code)", "hint": "请在系统弹窗中确认配对"}""",
+                         body: "{\"code\": \"\(code)\", \"hint\": \"请在系统弹窗中确认配对\"}",
                          contentType: "application/json")
             return
         }
@@ -151,7 +151,7 @@ final class BridgeServer: NSObject {
         }
         // 立即返回等待中，网页轮询 /status 或再次 POST /pair 取码
         sendResponse(conn: conn, status: 200,
-                     body: """{"waiting": true, "hint": "正在启动配对，请稍后查询配对码"}""",
+                     body: "{\"waiting\": true, \"hint\": \"正在启动配对，请稍后查询配对码\"}",
                      contentType: "application/json")
     }
 
@@ -204,7 +204,7 @@ final class BridgeServer: NSObject {
 
         guard let ipaData = ipaData, !ipaData.isEmpty else {
             sendResponse(conn: conn, status: 400,
-                         body: """{"saved": false, "error": "未收到 IPA 数据"}""",
+                         body: "{\"saved\": false, \"error\": \"未收到 IPA 数据\"}",
                          contentType: "application/json")
             return
         }
@@ -216,11 +216,11 @@ final class BridgeServer: NSObject {
             uploadedIpaURL = tmpURL
             print("[Bridge] IPA 已保存: \(tmpURL.path) (\(ipaData.count) bytes)")
             sendResponse(conn: conn, status: 200,
-                         body: """{"saved": true, "size": \(ipaData.count)}""",
+                         body: "{\"saved\": true, \"size\": \(ipaData.count)}",
                          contentType: "application/json")
         } catch {
             sendResponse(conn: conn, status: 500,
-                         body: """{"saved": false, "error": "\(error.localizedDescription)"}""",
+                         body: "{\"saved\": false, \"error\": \"\(error.localizedDescription)\"}",
                          contentType: "application/json")
         }
     }
@@ -265,7 +265,7 @@ final class BridgeServer: NSObject {
     private func handleInstall(bundleId: String, conn: NWConnection) async {
         guard let ipaURL = uploadedIpaURL else {
             sendResponse(conn: conn, status: 400,
-                         body: """{"installed": false, "error": "请先上传 IPA"}""",
+                         body: "{\"installed\": false, \"error\": \"请先上传 IPA\"}",
                          contentType: "application/json")
             return
         }
@@ -284,12 +284,12 @@ final class BridgeServer: NSObject {
             uploadedIpaURL = nil
 
             sendResponse(conn: conn, status: 200,
-                         body: """{"installed": true, "bundleId": "\(bundleId)"}""",
+                         body: "{\"installed\": true, \"bundleId\": \"\(bundleId)\"}",
                          contentType: "application/json")
         } catch {
             print("[Bridge] 安装失败: \(error)")
             sendResponse(conn: conn, status: 500,
-                         body: """{"installed": false, "error": "\(error.localizedDescription)"}""",
+                         body: "{\"installed\": false, \"error\": \"\(error.localizedDescription)\"}",
                          contentType: "application/json")
         }
     }
