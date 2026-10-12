@@ -43,19 +43,19 @@ final class BridgeServer: NSObject {
 
     // MARK: - HTTP 处理
 
-    private func handle(_ conn: NWConnection) {
+    private nonisolated func handle(_ conn: NWConnection) {
         conn.start(queue: .global(qos: .userInitiated))
         receiveRequest(on: conn)
     }
 
-    private func receiveRequest(on conn: NWConnection) {
+    private nonisolated func receiveRequest(on conn: NWConnection) {
         conn.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] data, _, isDone, error in
             guard let data = data, !data.isEmpty else {
                 conn.cancel()
                 return
             }
             let request = String(data: data, encoding: .utf8) ?? ""
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
                 self?.route(request: request, conn: conn)
             }
         }
