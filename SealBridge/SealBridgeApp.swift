@@ -19,8 +19,6 @@ final class BridgeModel: ObservableObject {
     @Published var isRunning = false
     @Published var paired = false
     @Published var tunnelOK = false
-    @Published var pairCode: String?
-    @Published var pairing = false
     @Published var log: [String] = []
     private var timer: Timer?
 
@@ -29,7 +27,7 @@ final class BridgeModel: ObservableObject {
         isRunning = true
         addLog("桥已启动，端口 8765")
         addLog("Safari 打开安装器网页即可使用")
-        // 轮询状态
+        // 轮询状态（配对全自动，无需手动）
         timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in self?.refreshStatus() }
         }
@@ -37,31 +35,11 @@ final class BridgeModel: ObservableObject {
 
     func refreshStatus() {
         let s = BridgeServer.shared.getStatus()
+        let wasPaired = paired
         paired = s.paired
         tunnelOK = s.tunnel
-        if let code = s.pairCode, !code.isEmpty {
-            if pairCode != code {
-                pairCode = code
-                addLog("配对码: \(code)，请在系统弹窗中确认")
-            }
-            pairing = true
-        } else if s.paired {
-            pairing = false
-            pairCode = nil
-        }
-    }
-
-    func startPairing() {
-        pairing = true
-        pairCode = nil
-        addLog("开始配对…")
-        BridgeServer.shared.triggerPairing { [weak self] code in
-            Task { @MainActor [weak self] in
-                if let code = code {
-                    self?.pairCode = code
-                    self?.addLog("配对码: \(code)")
-                }
-            }
+        if paired && !wasPaired {
+            addLog("设备已就绪，可以安装")
         }
     }
 
@@ -98,26 +76,19 @@ struct ContentView: View {
                     }
                 }
                 Section("配对") {
-                    if let code = model.pairCode {
-                        HStack {
-                            Text("配对码")
-                            Spacer()
-                            Text(code)
-                                .font(.title2.bold())
-                                .foregroundColor(.blue)
+                    HStack {
+                        Text("状态")
+                        Spacer()
+                        if model.paired {
+                            Text("已就绪").foregroundColor(.green)
+                        } else if model.tunnelOK {
+                            Text("连接设备中…").foregroundColor(.orange)
+                        } else {
+                            Text("等待 VPN 隧道").foregroundColor(.orange)
                         }
-                        Text("请在系统弹出的配对窗口中输入此码确认")
-                            .font(.footnote).foregroundColor(.secondary)
-                    } else {
-                        Button(action: { model.startPairing() }) {
-                            HStack {
-                                Spacer()
-                                Text(model.pairing ? "配对中…" : "开始配对")
-                                Spacer()
-                            }
-                        }
-                        .disabled(model.pairing || model.paired)
                     }
+                    Text("配对全自动，无需手动操作。隧道通后桥会自动连接设备。")
+                        .font(.footnote).foregroundColor(.secondary)
                 }
                 Section("日志") {
                     ForEach(model.log, id: \.self) { line in

@@ -178,9 +178,16 @@ final class BridgeServer: NSObject {
 
         switch (method, path) {
         case ("GET", "/status"):
-            let paired = pairingDone
             let tunnel = checkTunnel()
-            let udid = Minimuxer.fetchUDID() ?? ""
+            // paired = 隧道通且能调 lockdown 拿 UDID（真实可用性，不是手动标记）
+            var paired = false
+            var udid = ""
+            if tunnel {
+                if let fetchedUDID = Minimuxer.fetchUDID(), !fetchedUDID.isEmpty {
+                    paired = true
+                    udid = fetchedUDID
+                }
+            }
             let pairCode = currentPairCode ?? ""
             let body = "{\"paired\": \(paired), \"tunnel\": \(tunnel), \"version\": \"1.0\", \"udid\": \"\(udid)\", \"pairCode\": \"\(pairCode)\"}"
             sendResponse(conn: conn, status: 200, body: body, contentType: "application/json")
