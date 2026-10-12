@@ -25,6 +25,7 @@
 		9CA31873B1 /* Provision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C66B2A9F1 /* Provision.swift */; };
 		9CC286A1B1 /* RawPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA69329F1 /* RawPacket.swift */; };
 		9C3269CAB1 /* PhonePairingHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C83D375F1 /* PhonePairingHost.swift */; };
+		9D000002 /* RustBridge.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D000001 /* RustBridge.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		9C66B2A9F1 /* Provision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provision.swift; sourceTree = "<group>"; };
 		9CA69329F1 /* RawPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawPacket.swift; sourceTree = "<group>"; };
 		9C83D375F1 /* PhonePairingHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePairingHost.swift; sourceTree = "<group>"; };
+		9D000001 /* RustBridge.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = RustBridge.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D000002 /* RustBridge.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +112,14 @@
 				9CA69329F1 /* RawPacket.swift */,
 			);
 			path = Minimuxer;
+			sourceTree = "<group>";
+		};
+		9D000003 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				9D000001 /* RustBridge.xcframework */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
