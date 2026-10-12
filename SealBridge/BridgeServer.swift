@@ -204,6 +204,19 @@ final class BridgeServer: NSObject {
         case ("POST", "/pairing"):
             handlePairingUpload(request: request, rawData: rawData, conn: conn)
 
+        case ("GET", "/pairing"):
+            let html = """
+            <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>上传配对文件</title></head>
+            <body style="font-family:-apple-system;padding:20px;max-width:500px;margin:auto">
+            <h2>上传配对文件</h2>
+            <p>选择 .mobiledevicepairing 文件上传，桥会自动启动 Minimuxer。</p>
+            <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".mobiledevicepairing" style="margin:10px 0"><br>
+            <button type="submit" style="padding:10px 30px;font-size:16px">上传</button>
+            </form></body></html>
+            """
+            sendResponse(conn: conn, status: 200, body: html, contentType: "text/html")
+
         case ("POST", "/install"):
             // 从 query 或 body 取 bundleId
             let bundleId = extractBundleId(from: request) ?? "com.example.app"
